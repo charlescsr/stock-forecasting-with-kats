@@ -1,10 +1,9 @@
-import sys
 import gradio as gr
 from kats.consts import TimeSeriesData
 from kats.models.prophet import ProphetModel, ProphetParams
 import yfinance as yf
 
-def forecast(ticker, start_day, start_month, start_year, end_day, end_month, end_year):
+def forecast(ticker, start_day, start_month, start_year, end_day, end_month, end_year, how_many_months_ahead):
     tick = yf.Ticker(ticker)
 
     start_date = str(int(start_year)) + "-" + str(int(start_month)) + "-" + str(int(start_day))
@@ -30,7 +29,7 @@ def forecast(ticker, start_day, start_month, start_year, end_day, end_month, end
     m.fit()
 
     # make prediction for next year
-    m.predict(steps=12, freq="MS")
+    m.predict(steps=int(how_many_months_ahead), freq="MS")
     #print(fcst)
     #pl = m.plot()
     #print(type(pl))
@@ -38,6 +37,6 @@ def forecast(ticker, start_day, start_month, start_year, end_day, end_month, end
     return m.plot()
 
 gr.Interface(forecast, 
-            inputs=["text", "number", "number", "number", "number", "number", "number"], 
+            inputs=["text", "number", "number", "number", "number", "number", "number", "number"], 
             outputs=["plot"], 
-            examples=[["SPY", 1, 1, 2020, 31, 12, 2020]]).launch()
+            examples=[["SPY", 1, 1, 2020, 31, 12, 2020, 24]]).launch()
