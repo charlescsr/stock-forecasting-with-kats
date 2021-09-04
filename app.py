@@ -32,10 +32,10 @@ def forecast(ticker, start_day, start_month, start_year, end_day, end_month, end
     # make prediction for next year
     m.predict(steps=12, freq="MS")
     #print(fcst)
-    pl = m.plot()
-    print(type(pl))
+    #pl = m.plot()
+    #print(type(pl))
 
-    return pl
+    return m.plot()
 
 gr.Interface(forecast, 
             inputs=["text", "number", "number", "number", "number", "number", "number"], 
